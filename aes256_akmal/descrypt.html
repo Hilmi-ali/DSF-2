@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deskripsi File</title>
+    <style>
+      body {
+        font-family: "Mitr", sans-serif;
+        background-color: rgb(154, 120, 100);
+        align-content: center;
+      }
+      .main {
+        margin-left: 400px;
+        width: 480px;
+        border-radius: 20px;
+        height: 300px;
+        background-color: antiquewhite;
+      }
+
+      h3 {
+        font-size: 30px;
+        text-align: center;
+        margin-top: 170px;
+        padding-top: 30px;
+      }
+      .drop-container {
+        text-align: center;
+        margin: 10px;
+      }
+      .inputFile {
+        margin: 10px;
+      }
+      .inputKey {
+        width: 300px;
+        height: 30px;
+        border-radius: 5px;
+        padding-left: 10px;
+      }
+      button {
+        margin-top: 30px;
+        width: 110px;
+        height: 35px;
+        background-color: darkgoldenrod;
+        color: aliceblue;
+        border-radius: 10px;
+      }
+      .move {
+        text-align: end;
+        margin-right: 30px;
+      }
+      .desc {
+        padding: 10px;
+        width: 30px;
+        height: 15px;
+        background-color: #555;
+        color: aliceblue;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <h3>Deskripsi File</h3>
+      <label for="images" class="drop-container">
+        <form
+          id="decryptionForm"
+          action="/decrypt"
+          method="POST"
+          enctype="multipart/form-data"
+          class="form-inline"
+        >
+          <input
+            class="inputFile"
+            type="file"
+            id="images"
+            name="file"
+            accept=".pdf, .jpg, .png, .txt"
+            required
+          />
+          <br />
+          <input
+            class="inputKey"
+            type="password"
+            id="pwd"
+            name="key"
+            placeholder="Masukkan kunci"
+            required
+          />
+          <br />
+          <button type="submit">Dekripsi</button>
+        </form>
+        <div class="move">
+          <a href="home.html" class="desc">Encrypt</a>
+        </div>
+      </label>
+    </div>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        fetch("/")
+          .then((response) => response.text())
+          .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+
+            const decryptionLogDiv = doc.getElementById("decryptionLog");
+
+            const decryptionEntries = Array.from(
+              decryptionLogDiv.getElementsByTagName("span")
+            );
+
+            decryptionEntries.forEach((entry) => {
+              const filename = entry.textContent.trim();
+              const div = createLogEntryDiv(filename, "decrypted");
+              decryptionLogDiv.appendChild(div);
+            });
+          })
+          .catch((error) => {
+            console.error(
+              "Error retrieving encryption and decryption logs:",
+              error
+            );
+          });
+      });
+
+      const decryptionForm = document.getElementById("decryptionForm");
+      decryptionForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(decryptionForm);
+        fetch(decryptionForm.action, {
+          method: decryptionForm.method,
+          body: formData,
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.text();
+            } else {
+              throw new Error("Failed to decrypt file.");
+            }
+          })
+          .then(() => {
+            const fileInput =
+              decryptionForm.querySelector('input[type="file"]');
+            const filename = fileInput.files[0].name;
+            const div = createLogEntryDiv(filename, "decrypted");
+            const decryptionLogDiv = document.getElementById("decryptionLog");
+            decryptionLogDiv.appendChild(div);
+            fileInput.value = null; // Clear file input value after decryption
+          })
+          .catch((error) => {
+            console.error("Decryption error:", error);
+          });
+      });
+    </script>
+  </body>
+</html>
