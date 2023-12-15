@@ -12,22 +12,23 @@ body {
   align-items: center;
   height: 620px;
   font-family: "Mitr", sans-serif;
-  background-color: rgb(154, 120, 100);
+  background-image: url(https://cdn.dribbble.com/users/1013033/screenshots/3110714/media/9f03b9d3ffecf220acad882dfb0956b6.jpg?resize=800x600&vertical=center);
   position: relative;
+  object-fit: cover;
 }
 
 .main {
   margin: auto;
   z-index: 1;
   width: 480px;
-  height: 300px;
+  height: 340px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
   text-align: center;
   margin-top: 150px;
-  background-color: antiquewhite;
+  background-color: rgb(13, 27, 68);
   /* Tambahkan margin-top untuk mengatur jarak antara judul h1 dan class main */
 }
 
@@ -36,25 +37,25 @@ body {
   margin-bottom: 20px;
 }
 
-.logo h1 {
+.logo h3 {
   font-size: 32px;
-  color: #333;
+  color: #ffffff;
 }
 
 .container {
   width: auto;
   margin: auto;
   max-width: 600px;
-  background-color: antiquewhite;
+  background-color: rgb(13, 27, 68);
   padding: 20px;
   border-radius: 20px;
   text-align: center;
 }
 
-.container h1 {
+.container h3 {
   font-size: 24px;
   margin-bottom: 20px;
-  color: #333;
+  color: #ffffff;
 }
 
 .drop-container {
